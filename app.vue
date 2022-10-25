@@ -8,9 +8,11 @@
 
           <form class="grid grid-cols-2 gap-4 items-center justify-items-center text-center w-full" @submit.prevent="handleClick">
             <label>Number of steps:</label>
-            <input type="number" name="steps" v-model="stepCount">
+            <input type="number" name="steps" min="0" max="100" v-model="stepCount">
             <label>Number of voices:</label>
-            <input type="number" name="voices" v-model="voiceCount">
+            <input type="number" name="voices" min="0" max="100" v-model="voiceCount">
+            <label>Handicap (0-1): <br><span class="opacity-70 text-sm">0 is least likely to be active</span></label>
+            <input type="number" name="handicap" min="0" max="1" step="0.01" v-model="handicap">
             <div class="flex gap-8 items-center justify-center col-span-2">
               <input type="submit" class="bg-green-800 w-64 rounded-xl p-4 hover:bg-green-900 cursor-pointer" value="Generate">
               <div class="flex gap-2 mt-4">
@@ -33,7 +35,7 @@
 
           <div :class="['sequences-container', viewMode === 'grid' ? 'grid-mode' : 'line-mode']">
             <div v-for="sequence in sequences" :class="['sequence', viewMode === 'grid' ? 'grid-mode' : 'line-mode']">
-                <span v-for="(item, idx) in sequence" :class="['blob', item && 'bg-red-500']">{{idx+1}}</span>
+                <span v-for="(item, idx) in sequence" :class="['blob', item <= 0 ? '' : 'bg-red-500']">{{idx+1}}</span>
             </div>
           </div>
     </main>
@@ -53,6 +55,7 @@
   const errorMsg = useState("errorMsg", () => null)
   const sequences = useState("sequences", () => Array())
   const viewMode = useState("viewMode", () => "line")
+  const handicap = useState("handicap", () => 1)
 
   useHead({title: appConfig.title})
 
@@ -84,7 +87,7 @@
   const generateSequence = () => {
     let sequence = Array(stepCount.value).fill(0)
     sequence.forEach( (i,index) => {
-      sequence[index] = Math.round(Math.random())
+      sequence[index] = Math.round(Math.random() - ((1-handicap.value)*0.5))
     })
 
     return sequence
