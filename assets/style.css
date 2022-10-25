@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-color: #1e1e1e;
+  --text-color: white;
+}
+
+body {
+  color: var(--text-color);
+  font-family: "Karla", sans-serif;
+  background-color: var(--bg-color);
+}
+
+.main-wrapper {
+    height: 100vh;
+    width: 100vw;
+    @apply flex flex-col;
+}
+
+input[type=number] {
+  @apply rounded-lg p-4 pr-2 bg-gray-700 w-16;
+}
+
+
+.error {
+  @apply opacity-0 transition-opacity ease-in-out;
+}
+.error.active {
+  @apply opacity-100;
+}
+
+.sequence {
+  @apply bg-gray-900 grid p-4 border border-white rounded-md;
+}
+
+.sequence.line-mode {
+  @apply grid-cols-16;
+}
+
+.sequence.grid-mode {
+  @apply grid-cols-4;
+}
+
+.blob {
+  @apply flex items-center justify-center border-gray-500 border rounded-full w-8 aspect-square;
+}
+
+.icon {
+  @apply border rounded-md;
+}
+
+.icon-button {
+  @apply opacity-70 hover:opacity-100 cursor-pointer flex flex-col items-center justify-center;
+}
+
+.sequences-container {
+  @apply flex flex-wrap gap-4 mb-12 mt-4;
+}
+
+.sequences-container.line-mode {
+  @apply flex-col;
+}
